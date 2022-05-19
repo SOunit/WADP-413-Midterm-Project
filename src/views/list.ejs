@@ -2,23 +2,25 @@
 
 <p>list</p>
 
-<% for(const blog of blogList){ %>
-<tr>
-  <td><%= blog.title %></td>
-  <td>
-    <div>
-      <a href="/edit/<%= blog._id %>" class="btn btn-sm btn-warning">Edit</a>
-    </div>
-    <div>
-      <a
-        href="/delete/<%= blog._id %>?_method=DELETE"
-        class="btn btn-sm btn-danger"
-        >Delete</a
-      >
-    </div>
-    <!-- <form action="/delete/<%= blog._id %>?_method=DELETE" method="post">
+<table style="border: 1px solid blue">
+  <% for(const blog of blogList){ %>
+  <tr>
+    <td style="padding: 1rem; border: 1px solid pink"><%= blog.title %></td>
+    <td>
+      <div style="margin: 1rem">
+        <a href="/edit/<%= blog._id %>" class="btn btn-sm btn-warning">Edit</a>
+      </div>
+      <div style="margin: 1rem">
+        <a
+          href="/delete/<%= blog._id %>?_method=DELETE"
+          class="btn btn-sm btn-danger"
+          >Delete</a
+        >
+      </div>
+      <!-- <form action="/delete/<%= blog._id %>?_method=DELETE" method="post">
                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
             </form> -->
-  </td>
-</tr>
-<% } %> <%- include("_footer") -%>
+    </td>
+  </tr>
+  <% } %> <%- include("_footer") -%>
+</table>
