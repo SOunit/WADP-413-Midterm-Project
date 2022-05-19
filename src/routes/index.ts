@@ -43,4 +43,10 @@ router.post("/edit/:id", (req, res) => {
   res.redirect("/");
 });
 
+router.get("/delete/:id", (req, res) => {
+  const { id } = req.params;
+
+  res.redirect("/");
+});
+
 export default router;
