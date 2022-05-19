@@ -5,12 +5,16 @@
     "express": "^4.18.1",
     "install": "^0.13.0",
     "npm": "^8.10.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "shelljs": "^0.8.5",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.35",
+    "@types/shelljs": "^0.8.11",
     "nodemon": "^2.0.16"
   },
   "name": "wadp-413-midterm-project",
@@ -19,7 +23,10 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/app.ts",
     "start": "node dist/app.js",
-    "postinstall": "tsc"
+    "postinstall": "npm-run-all clean tsc copy-assets",
+    "clean": "rimraf dist/*",
+    "tsc": "tsc",
+    "copy-assets": "ts-node tools/copyAssets.ts"
   },
   "repository": {
     "type": "git",
