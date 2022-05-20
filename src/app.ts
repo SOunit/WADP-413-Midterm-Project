@@ -2,6 +2,8 @@ import express from "express";
 import path from "path";
 import routes from "./routes";
 import bodyParser from "body-parser";
+import db from "./services/mongo";
+import Blog from "./models/blog";
 
 const app = express();
 
@@ -26,6 +28,11 @@ app.use(routes);
 
 const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, () => {
-  console.log(`listening on ${PORT}`);
+db.initDb((err, db) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(`listening on ${PORT}`);
+    app.listen(PORT);
+  }
 });

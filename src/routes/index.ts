@@ -1,10 +1,15 @@
 import express from "express";
+import Blog from "../models/blog";
 
 const router = express.Router();
 
 // FIXME: set proper type to request object
-router.get("/", (req, res) => {
-  res.render("list", { blogList: (req as any).blogList });
+router.get("/", async (req, res) => {
+  const blogList = await Blog.getBlogList();
+
+  console.log("blogList", blogList);
+
+  res.render("list", { blogList });
 });
 
 router.get("/login", (req, res) => {
@@ -19,10 +24,11 @@ router.get("/create", (req, res) => {
   res.render("create", { blog: {} });
 });
 
-router.post("/create", (req, res) => {
+router.post("/create", async (req, res) => {
   const { title } = req.body;
 
-  (req as any).blogList.push({ id: Math.random(), title });
+  const blog = new Blog(title);
+  await blog.save();
 
   res.redirect("/");
 });
