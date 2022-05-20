@@ -1,4 +1,5 @@
 import express from "express";
+import { ObjectId } from "mongodb";
 import Blog from "../models/blog";
 
 const router = express.Router();
@@ -33,24 +34,27 @@ router.post("/create", async (req, res) => {
   res.redirect("/");
 });
 
-router.get("/edit/:id", (req, res) => {
+router.get("/edit/:id", async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  const blog = await Blog.getBlogById(id);
 
-  res.render("edit", { blog: (req as any).blogList[0] });
+  res.render("edit", { blog });
 });
 
-router.post("/edit/:id", (req, res) => {
+router.post("/edit/:id", async (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
 
-  (req as any).blogList[0].title = title;
+  const blog = new Blog(title, new ObjectId(id));
+  await blog.updateBlog();
 
   res.redirect("/");
 });
 
-router.get("/delete/:id", (req, res) => {
+router.get("/delete/:id", async (req, res) => {
   const { id } = req.params;
+
+  await Blog.deleteBlogById(id);
 
   res.redirect("/");
 });

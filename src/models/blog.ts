@@ -5,29 +5,32 @@ class Blog {
   constructor(public title: string, public _id?: ObjectId) {}
 
   save() {
-    console.log("save this", this);
-
-    const dbo = db.getDb();
-    return dbo.collection("blogs").insertOne(this);
+    return db.getDb().collection("blogs").insertOne(this);
   }
 
   static getBlogList() {
-    const dbo = db.getDb();
-    return dbo.collection("blogs").find().toArray();
+    return db.getDb().collection("blogs").find().toArray();
   }
 
   static getBlogById(_id: string) {
-    const dbo = db.getDb();
-    return dbo.collection("blogs").findOne({ _id: new ObjectId(_id) });
+    return db
+      .getDb()
+      .collection("blogs")
+      .findOne({ _id: new ObjectId(_id) });
   }
 
-  updateBlog(this: Blog) {
-    console.log(this);
-
-    const dbo = db.getDb();
-    return dbo
+  updateBlog() {
+    return db
+      .getDb()
       .collection("blogs")
       .updateOne({ _id: new ObjectId(this._id) }, { $set: this });
+  }
+
+  static deleteBlogById(_id: string) {
+    return db
+      .getDb()
+      .collection("blogs")
+      .deleteOne({ _id: new ObjectId(_id) });
   }
 }
 
