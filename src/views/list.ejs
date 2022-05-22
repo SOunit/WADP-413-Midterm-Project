@@ -22,6 +22,9 @@
           >Delete</a
         >
       </div>
+      <div style="margin: 1rem">
+        <a href="/like/<%= blog._id %>" class="btn btn-sm btn-danger">Like</a>
+      </div>
       <!-- <form action="/delete/<%= blog._id %>?_method=DELETE" method="post">
                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
             </form> -->
@@ -29,6 +32,11 @@
     <td>
       <% for(const comment of blog.comments){ %>
       <div><%= comment %></div>
+      <% } %>
+    </td>
+    <td>
+      <% if(user.likes[blog._id]){ %>
+      <p>like</p>
       <% } %>
     </td>
   </tr>

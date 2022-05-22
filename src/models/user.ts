@@ -5,6 +5,7 @@ class User {
   constructor(
     public email: string,
     public password: string,
+    public likes: { [key: string]: string },
     public _id?: ObjectId
   ) {}
 
@@ -22,6 +23,13 @@ class User {
 
   static getUserByEmailAndPassword(email: string, password: string) {
     return db.getDb().collection("users").findOne({ email, password });
+  }
+
+  update() {
+    return db
+      .getDb()
+      .collection("users")
+      .updateOne({ _id: this._id }, { $set: this });
   }
 }
 

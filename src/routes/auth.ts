@@ -10,14 +10,16 @@ router.get("/signup", (req, res) => {
 router.post("/signup", async (req, res) => {
   const { email, password } = req.body;
 
-  const user = new User(email, password);
+  const user = new User(email, password, {});
 
   try {
     await user.save();
     (req.session as any).isLoggedIn = true;
+    (req.session as any).userId = user._id;
     res.redirect("/");
   } catch (err) {
     (req.session as any).isLoggedIn = false;
+    (req.session as any).userId = null;
     res.send({ message: (err as any).message });
   }
 });
@@ -35,6 +37,8 @@ router.post("/login", async (req, res) => {
   }
 
   (req.session as any).isLoggedIn = true;
+  (req.session as any).userId = user._id;
+
   res.redirect("/");
 });
 

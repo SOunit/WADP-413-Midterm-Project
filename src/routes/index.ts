@@ -1,16 +1,20 @@
 import express from "express";
 import { ObjectId } from "mongodb";
 import Blog from "../models/blog";
+import User from "../models/user";
 
 const router = express.Router();
 
 // FIXME: set proper type to request object
 router.get("/", async (req, res) => {
+  const userId = (req.session as any).userId;
   const blogList = await Blog.getBlogList();
+  const user = await User.getUserById(userId);
 
-  console.log("blogList", blogList);
+  console.log("userId", userId);
+  console.log("user", user);
 
-  res.render("list", { blogList });
+  res.render("list", { blogList, user });
 });
 
 router.get("/create", (req, res) => {
@@ -75,6 +79,33 @@ router.post("/comment/:id", async (req, res) => {
   blog.comments.push(comment);
 
   await new Blog(blog.title, blog.comments, blog._id).updateBlog();
+
+  res.redirect("/");
+});
+
+router.get("/like/:id", async (req, res) => {
+  const postId = req.params.id;
+  const userId = (req.session as any).userId;
+
+  console.log(userId, postId);
+
+  const user = await User.getUserById(userId);
+  if (!user) {
+    return res.redirect("/");
+  }
+
+  if (user.likes[postId]) {
+    user.likes[postId] = null;
+  } else {
+    user.likes[postId] = postId;
+  }
+
+  await new User(
+    user.email,
+    user.password,
+    user.likes,
+    new ObjectId(user._id)
+  ).update();
 
   res.redirect("/");
 });
