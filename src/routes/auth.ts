@@ -26,14 +26,15 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
-  // FIXME
-  if (email === "t@t.com" && password === "password") {
-    (req.session as any).isLoggedIn = true;
+  const user = await User.getUserByEmailAndPassword(email, password);
+  if (!user) {
+    return res.redirect("/");
   }
 
+  (req.session as any).isLoggedIn = true;
   res.redirect("/");
 });
 
