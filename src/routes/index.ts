@@ -37,8 +37,13 @@ router.post("/edit/:id", async (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
 
-  const blog = new Blog(title, [], new ObjectId(id));
-  await blog.updateBlog();
+  const blog = await Blog.getBlogById(id);
+
+  if (!blog) {
+    return;
+  }
+
+  new Blog(title, blog.comments, new ObjectId(id)).updateBlog();
 
   res.redirect("/");
 });
