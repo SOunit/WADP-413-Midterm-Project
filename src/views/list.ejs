@@ -8,7 +8,12 @@
     <td style="padding: 1rem; border: 1px solid pink"><%= blog.title %></td>
     <td>
       <div style="margin: 1rem">
-        <a href="/edit/<%= blog._id %>" class="btn btn-sm btn-warning">Edit</a>
+        <a href="/comment/<%= blog._id %>" class="btn btn-sm btn-warning"
+          >Comment</a
+        >
+      </div>
+      <div style="margin: 1rem">
+        <a href="/edit/<%= blog._id %>" class="btn btn-sm btn-warning">Add</a>
       </div>
       <div style="margin: 1rem">
         <a
@@ -20,6 +25,11 @@
       <!-- <form action="/delete/<%= blog._id %>?_method=DELETE" method="post">
                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
             </form> -->
+    </td>
+    <td>
+      <% for(const comment of blog.comments){ %>
+      <div><%= comment %></div>
+      <% } %>
     </td>
   </tr>
   <% } %> <%- include("_footer") -%>

@@ -20,7 +20,7 @@ router.get("/create", (req, res) => {
 router.post("/create", async (req, res) => {
   const { title } = req.body;
 
-  const blog = new Blog(title);
+  const blog = new Blog(title, []);
   await blog.save();
 
   res.redirect("/");
@@ -37,7 +37,7 @@ router.post("/edit/:id", async (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
 
-  const blog = new Blog(title, new ObjectId(id));
+  const blog = new Blog(title, [], new ObjectId(id));
   await blog.updateBlog();
 
   res.redirect("/");
@@ -47,6 +47,29 @@ router.get("/delete/:id", async (req, res) => {
   const { id } = req.params;
 
   await Blog.deleteBlogById(id);
+
+  res.redirect("/");
+});
+
+router.get("/comment/:id", async (req, res) => {
+  const { id } = req.params;
+  const blog = await Blog.getBlogById(id);
+
+  res.render("comment", { blog });
+});
+
+router.post("/comment/:id", async (req, res) => {
+  const { id } = req.params;
+  const { comment } = req.body;
+
+  const blog = await Blog.getBlogById(id);
+
+  if (!blog) {
+    return;
+  }
+  blog.comments.push(comment);
+
+  await new Blog(blog.title, blog.comments, blog._id).updateBlog();
 
   res.redirect("/");
 });

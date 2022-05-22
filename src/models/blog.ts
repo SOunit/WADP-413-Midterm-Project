@@ -2,7 +2,11 @@ import { ObjectId } from "mongodb";
 import db from "../services/mongo";
 
 class Blog {
-  constructor(public title: string, public _id?: ObjectId) {}
+  constructor(
+    public title: string,
+    public comments: string[],
+    public _id?: ObjectId
+  ) {}
 
   save() {
     return db.getDb().collection("blogs").insertOne(this);
